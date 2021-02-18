@@ -2,13 +2,14 @@ import sys
 import numpy as np
 import random
 
-MAX_FITNESS_SCORE = 28
+NUMBER_OF_QUEENS = 8
+MAX_FITNESS_SCORE = int((NUMBER_OF_QUEENS - 1)*(NUMBER_OF_QUEENS)/2)
 
 def generate_board():
     initial_population = []
 
-    for i in range(8):
-        initial_population.append(random.randint(0, 7))
+    for i in range(NUMBER_OF_QUEENS):
+        initial_population.append(random.randint(0, NUMBER_OF_QUEENS - 1))
     
     return initial_population
 
@@ -36,6 +37,9 @@ def main():
     if len(sys.argv) != 1:
         print('ERROR')
         print('\tPlease run script as <py queens.py>')
+
+    board = generate_board()
+    print(board)
 
 if __name__ == "__main__":
     main()
