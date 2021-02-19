@@ -4,6 +4,7 @@ import random
 
 NUMBER_OF_QUEENS = 8
 MAX_FITNESS_SCORE = int((NUMBER_OF_QUEENS - 1)*(NUMBER_OF_QUEENS)/2)
+POPULATION_SIZE = 20
 
 def generate_board():
     initial_population = []
@@ -33,13 +34,34 @@ def fitness_function(board):
 
     return score
 
+def generate_population():
+    population = [generate_board() for i in range(POPULATION_SIZE)]
+    return population
+
+def can_stop(population):
+    
+    if MAX_FITNESS_SCORE in [fitness_function(pos) for pos in population]:
+        return True
+    
+    return False
+
+def cross_over(population):
+    # Perform crossover here
+    return generate_population()
+
 def main():
     if len(sys.argv) != 1:
         print('ERROR')
         print('\tPlease run script as <py queens.py>')
 
-    board = generate_board()
-    print(board)
+    population = generate_population()
+
+    while not can_stop(population):
+        population = cross_over(population)
+
+    for board in population:
+        if fitness_function(board) == MAX_FITNESS_SCORE:
+            print(board)
 
 if __name__ == "__main__":
     main()
