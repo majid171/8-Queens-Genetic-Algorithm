@@ -4,9 +4,9 @@ import random
 
 NUMBER_OF_QUEENS = 8
 MAX_FITNESS_SCORE = int((NUMBER_OF_QUEENS - 1)*(NUMBER_OF_QUEENS)/2)
-POPULATION_SIZE = 2
+POPULATION_SIZE = 10000
 MUTATION_RATE = 0.05
-MAX_GENERATIONS = 1
+MAX_GENERATIONS = 1000
 
 class Board:
     def __init__(self):
@@ -49,7 +49,6 @@ def generate_population():
         board.values = generate_board()
         board.fitness = fitness_function(board.values)
 
-    population.sort(key=lambda x: x.fitness)
     return population
 
 def can_stop(population, generation):
@@ -57,7 +56,7 @@ def can_stop(population, generation):
     if MAX_FITNESS_SCORE in [pos.fitness for pos in population]:
         return True
     
-    if generation > MAX_GENERATIONS:
+    if generation == MAX_GENERATIONS:
         return True
 
     return False
@@ -82,8 +81,20 @@ def mutate(board):
 def genetic_algorithm(population):
     newpopulation = []
 
-    for i in range(len(population)):
-	    print()
+    while len(population) != 0:
+        parent1 = max(population, key=lambda x: x.fitness)
+        population.remove(parent1)
+        parent2 = max(population, key=lambda x: x.fitness)
+        population.remove(parent2)
+
+        child1 = crossover(parent1, parent2)
+        child2 = crossover(parent2, parent1)
+
+        mutate(child1)
+        mutate(child2)
+
+        newpopulation.append(child1)
+        newpopulation.append(child2)
 
     return newpopulation
 
@@ -103,7 +114,6 @@ def main():
     print("Generation #:", generation, "\nSolutions:")
 
     for board in population:
-        print(board.values, board.fitness)
         if board.fitness == MAX_FITNESS_SCORE:
             print(board.values)
 
