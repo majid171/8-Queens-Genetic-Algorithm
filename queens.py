@@ -90,8 +90,8 @@ def genetic_algorithm(population):
         child1 = crossover(parent1, parent2)
         child2 = crossover(parent2, parent1)
 
-        mutate(child1)
-        mutate(child2)
+        child1 = mutate(child1)
+        child2 = mutate(child2)
 
         newpopulation.append(child1)
         newpopulation.append(child2)
